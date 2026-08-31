@@ -1,0 +1,21 @@
+# Requisitos Funcionais - BiblioTech
+
+## RF01 — Permissão para Empréstimo
+Um usuário poderá realizar um novo empréstimo quando:
+- Estiver ativo;
+- Não possuir pendências;
+- Possuir menos de 3 empréstimos ativos.
+
+Caso qualquer condição não seja atendida, o empréstimo deve ser recusado.
+
+## RF02 — Multa por Atraso
+A multa é baseada na quantidade de dias de atraso:
+- **0 dias ou menos:** R$ 0,00
+- **1 a 7 dias:** R$ 2,00 por dia
+- **Acima de 7 dias:** R$ 14,00 + R$ 3,00 por dia excedente ao 7º dia
+
+## RF03 — Classificação de Atraso
+- **0 dias:** `"sem atraso"`
+- **1 até 7 dias:** `"atraso leve"`
+- **8 até 30 dias:** `"atraso moderado"`
+- **Mais de 30 dias:** `"atraso grave"`
