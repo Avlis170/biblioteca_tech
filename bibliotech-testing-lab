@@ -1,0 +1,21 @@
+bibliotech-testing-lab/
+│
+├── README.md
+├── requisitos.md
+├── requirements-dev.txt
+│
+├── src/
+│ ├── __init__.py
+│ └── bibliotech.py
+│
+├── tests/
+│ └── __init__.py
+│
+├── docs/
+│ ├── plano_testes.md
+│ ├── roteiro_testes.md
+│ └── matriz_rastreabilidade.md
+│
+└── .github/
+└── workflows/
+└── tests.yml
