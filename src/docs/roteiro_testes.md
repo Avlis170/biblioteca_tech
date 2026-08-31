@@ -1,35 +1,167 @@
 # Roteiro de Testes — BiblioTech
 
-## 1. Testes de Caixa Preta
-
-### 1.1 Função: `pode_emprestar` (RF01)
-
-| ID | Descrição / Cenário | Ativo | Pendência | Empréstimos Ativos | Resultado Esperado | Técnicas Aplicadas |
-|---|---|---|---|---|---|---|
-| **CP01** | Usuário ativo, sem pendências, 0 empréstimos (Cenário Válido) | `True` | `False` | 0 | `True` | Partição Equivalente / Válido |
-| **CP02** | Usuário inativo, sem pendências, 0 empréstimos | `False` | `False` | 0 | `False` | Partição Equivalente / Inválido |
-| **CP03** | Usuário ativo, com pendência, 0 empréstimos | `True` | `True` | 0 | `False` | Partição Equivalente / Inválido |
-| **CP04** | Usuário ativo, sem pendência, limite de 3 empréstimos | `True` | `False` | 3 | `False` | Análise de Valor de Fronteira |
-| **CP05** | Usuário ativo, sem pendência, limite inferior de 2 empréstimos | `True` | `False` | 2 | `True` | Análise de Valor de Fronteira |
-
----
-
-### 1.2 Função: `calcular_multa` (RF02)
-
-| ID | Descrição / Cenário | Dias de Atraso | Resultado Esperado (R$) | Técnicas Aplicadas |
-|---|---|---|---|---|
-| **CP06** | Sem atraso ou dias negativos (Fronteira 0) | 0 | `0.0` | Valor de Fronteira / Sem multa |
-| **CP07** | Atraso curto - Limite superior da 1ª faixa (7 dias) | 7 | `14.0` | Valor de Fronteira / (7 * R$ 2) |
-| **CP08** | Atraso intermediário - Início da 2ª faixa (8 dias) | 8 | `17.0` | Valor de Fronteira / (R$ 14 + 1 * R$ 3) |
-| **CP09** | Atraso longo - 10 dias | 10 | `23.0` | Partição Equivalente / (R$ 14 + 3 * R$ 3) |
+## CT-01
+**Requisito:** RF01  
+**Título:** Usuário com três empréstimos não pode realizar outro empréstimo  
+**Tipo:** Caixa preta  
+**Prioridade:** Alta  
+**Pré-condição:** Sistema disponível e usuário ativo  
+**Dados de teste:** `usuario_ativo = True`, `possui_pendencia = False`, `emprestimos_ativos = 3`  
+**Passos:** 1. Executar `pode_emprestar(True, False, 3)`  
+**Resultado esperado:** `False`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
 
 ---
 
-### 1.3 Função: `classificar_atraso` (RF03)
+## CT-02
+**Requisito:** RF01  
+**Título:** Permissão concedida para usuário ativo, sem pendência e com 0 empréstimos  
+**Tipo:** Caixa preta  
+**Prioridade:** Alta  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `usuario_ativo = True`, `possui_pendencia = False`, `emprestimos_ativos = 0`  
+**Passos:** 1. Executar `pode_emprestar(True, False, 0)`  
+**Resultado esperado:** `True`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
 
-| ID | Descrição / Cenário | Dias de Atraso | Classificação Esperada | Técnicas Aplicadas |
-|---|---|---|---|---|
-| **CP10** | Sem atraso (0 dias) | 0 | `"sem atraso"` | Valor de Fronteira |
-| **CP11** | Atraso leve - Limite superior (7 dias) | 7 | `"atraso leve"` | Valor de Fronteira |
-| **CP12** | Atraso moderado - Limite inferior (8 dias) | 8 | `"atraso moderado"` | Valor de Fronteira |
-| **CP13** | Atraso grave - Acima de 30 dias (31 dias) | 31 | `"atraso grave"` | Valor de Fronteira |
+---
+
+## CT-03
+**Requisito:** RF01  
+**Título:** Empréstimo recusado para usuário inativo  
+**Tipo:** Caixa preta  
+**Prioridade:** Média  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `usuario_ativo = False`, `possui_pendencia = False`, `emprestimos_ativos = 0`  
+**Passos:** 1. Executar `pode_emprestar(False, False, 0)`  
+**Resultado esperado:** `False`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-04
+**Requisito:** RF01  
+**Título:** Empréstimo recusado para usuário com pendência  
+**Tipo:** Caixa preta  
+**Prioridade:** Alta  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `usuario_ativo = True`, `possui_pendencia = True`, `emprestimos_ativos = 0`  
+**Passos:** 1. Executar `pode_emprestar(True, True, 0)`  
+**Resultado esperado:** `False`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-05
+**Requisito:** RF02  
+**Título:** Cálculo de multa para 0 dias de atraso  
+**Tipo:** Caixa preta  
+**Prioridade:** Média  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 0`  
+**Passos:** 1. Executar `calcular_multa(0)`  
+**Resultado esperado:** `0.0`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-06
+**Requisito:** RF02  
+**Título:** Cálculo de multa para 7 dias de atraso (limite da faixa leve)  
+**Tipo:** Caixa preta  
+**Prioridade:** Alta  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 7`  
+**Passos:** 1. Executar `calcular_multa(7)`  
+**Resultado esperado:** `14.0`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-07
+**Requisito:** RF02  
+**Título:** Cálculo de multa para 8 dias de atraso (início do excedente)  
+**Tipo:** Caixa preta  
+**Prioridade:** Alta  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 8`  
+**Passos:** 1. Executar `calcular_multa(8)`  
+**Resultado esperado:** `17.0`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-08
+**Requisito:** RF02  
+**Título:** Cálculo de multa para 10 dias de atraso  
+**Tipo:** Caixa preta  
+**Prioridade:** Média  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 10`  
+**Passos:** 1. Executar `calcular_multa(10)`  
+**Resultado esperado:** `23.0`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-09
+**Requisito:** RF03  
+**Título:** Classificação para 0 dias de atraso  
+**Tipo:** Caixa preta  
+**Prioridade:** Baixa  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 0`  
+**Passos:** 1. Executar `classificar_atraso(0)`  
+**Resultado esperado:** `"sem atraso"`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-10
+**Requisito:** RF03  
+**Título:** Classificação para 7 dias de atraso  
+**Tipo:** Caixa preta  
+**Prioridade:** Média  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 7`  
+**Passos:** 1. Executar `classificar_atraso(7)`  
+**Resultado esperado:** `"atraso leve"`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-11
+**Requisito:** RF03  
+**Título:** Classificação para 8 dias de atraso  
+**Tipo:** Caixa preta  
+**Prioridade:** Média  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 8`  
+**Passos:** 1. Executar `classificar_atraso(8)`  
+**Resultado esperado:** `"atraso moderado"`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou  
+
+---
+
+## CT-12
+**Requisito:** RF03  
+**Título:** Classificação para 31 dias de atraso  
+**Tipo:** Caixa preta  
+**Prioridade:** Média  
+**Pré-condição:** Sistema disponível  
+**Dados de teste:** `dias = 31`  
+**Passos:** 1. Executar `classificar_atraso(31)`  
+**Resultado esperado:** `"atraso grave"`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou
