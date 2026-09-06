@@ -165,3 +165,31 @@
 **Resultado esperado:** `"atraso grave"`  
 **Resultado obtido:**  
 **Status:** [ ] Passou [ ] Falhou
+
+## 2. Testes de Caixa Branca
+
+## CB-01
+**Requisito:** RF01  
+**Título:** Validação de limite exato no código (`emprestimos_ativos == 3`)  
+**Tipo:** Caixa branca  
+**Prioridade:** Alta  
+**Pré-condição:** Leitura do código-fonte `bibliotech.py`  
+**Dados de teste:** `usuario_ativo = True`, `possui_pendencia = False`, `emprestimos_ativos = 3`  
+**Passos:** 1. Executar `pode_emprestar(True, False, 3)`  
+**Resultado esperado:** `False`  
+**Resultado obtido:** `True` (Bug detectado: a condição `>` permitiu o empréstimo)  
+**Status:** [ ] Passou [x] Falhou  
+
+---
+
+## CB-02
+**Requisito:** RF02 / RF03  
+**Título:** Cobertura do ramo condicional para dias de atraso negativos  
+**Tipo:** Caixa branca  
+**Prioridade:** Média  
+**Pré-condição:** Leitura do código-fonte `bibliotech.py`  
+**Dados de teste:** `dias = -5`  
+**Passos:** 1. Executar `calcular_multa(-5)` e `classificar_atraso(-5)`  
+**Resultado esperado:** `0.0` e `"sem atraso"`  
+**Resultado obtido:**  
+**Status:** [ ] Passou [ ] Falhou
