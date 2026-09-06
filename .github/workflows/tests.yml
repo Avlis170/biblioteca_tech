@@ -23,5 +23,5 @@ jobs:
           pip install pytest pytest-cov
 
       - name: Executar testes
-       run: |
+        run: |
           python -m pytest test/ -v --cov=src --cov-branch
