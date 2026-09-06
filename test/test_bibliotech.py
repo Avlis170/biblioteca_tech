@@ -65,3 +65,21 @@ def test_classificar_atraso_moderado():
 def test_classificar_atraso_grave():
     # CT-12: 31 dias
     assert classificar_atraso(31) == "atraso grave"
+
+# ==========================================
+# Testes de Caixa Branca (Cobertura de Caminhos e Decisões)
+# ==========================================
+
+def test_caixa_branca_cobertura_dias_negativos():
+    # Exercita o ramo: if dias_atraso <= 0 (com valor negativo)
+    assert calcular_multa(-5) == 0.0
+    assert classificar_atraso(-2) == "sem atraso"
+
+def test_caixa_branca_cobertura_atraso_grave():
+    # Exercita o ramo de mais de 30 dias de atraso (> 30)
+    assert classificar_atraso(45) == "atraso grave"
+
+def test_caixa_branca_bug_limite_exato_3_emprestimos():
+    # Teste focado no bug: emprestimos_ativos == 3
+    # O requisito diz: "menos de 3". Portanto, 3 DEVE retornar False.
+    assert pode_emprestar(True, False, 3) is False
