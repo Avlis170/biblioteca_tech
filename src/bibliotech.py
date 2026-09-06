@@ -5,7 +5,7 @@ def pode_emprestar(usuario_ativo, possui_pendencia, emprestimos_ativos):
         return False
     if possui_pendencia:
         return False
-    if emprestimos_ativos > LIMITE_EMPRESTIMOS:
+    if emprestimos_ativos >= LIMITE_EMPRESTIMOS:
         return False
     return True
 
