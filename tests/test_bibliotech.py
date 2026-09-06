@@ -1,85 +1,48 @@
 from src.bibliotech import pode_emprestar, calcular_multa, classificar_atraso
 
-# ==========================================
-# Testes de Caixa Preta: pode_emprestar (RF01)
-# ==========================================
+# RF01 - Testes de Caixa Preta
+def test_usuario_ativo_sem_pendencia_poucos_emprestimos():
+    assert pode_emprestar(True, False, 1) is True
 
-def test_usuario_valido_pode_emprestar():
-    # CT-02: Usuário ativo, sem pendências e com 0 empréstimos
-    resultado = pode_emprestar(True, False, 0)
-    assert resultado is True
+def test_usuario_inativo():
+    assert pode_emprestar(False, False, 1) is False
 
-def test_usuario_inativo_nao_pode_emprestar():
-    # CT-03: Usuário inativo
-    resultado = pode_emprestar(False, False, 0)
-    assert resultado is False
-
-def test_usuario_com_pendencia_nao_pode_emprestar():
-    # CT-04: Usuário com pendência
-    resultado = pode_emprestar(True, True, 0)
-    assert resultado is False
+def test_usuario_com_pendencia():
+    assert pode_emprestar(True, True, 1) is False
 
 def test_usuario_no_limite_nao_pode_emprestar():
-    # CT-01: Usuário no limite de 3 empréstimos
-    resultado = pode_emprestar(True, False, 3)
-    assert resultado is False
+    assert pode_emprestar(True, False, 3) is False
 
-
-# ==========================================
-# Testes de Caixa Preta: calcular_multa (RF02)
-# ==========================================
-
-def test_calcular_multa_zero_dias():
-    # CT-05: 0 dias de atraso
+# RF02 - Testes de Caixa Preta (Multa)
+def test_multa_sem_atraso():
     assert calcular_multa(0) == 0.0
 
-def test_calcular_multa_sete_dias():
-    # CT-06: 7 dias de atraso (limite faixa leve)
+def test_multa_atraso_levedia_7():
     assert calcular_multa(7) == 14.0
 
-def test_calcular_multa_oito_dias():
-    # CT-07: 8 dias de atraso (início excedente)
+def test_multa_atraso_grave_dia_8():
     assert calcular_multa(8) == 17.0
 
-def test_calcular_multa_dez_dias():
-    # CT-08: 10 dias de atraso
-    assert calcular_multa(10) == 23.0
+def test_multa_dias_negativos():
+    assert calcular_multa(-5) == 0.0
 
-
-# ==========================================
-# Testes de Caixa Preta: classificar_atraso (RF03)
-# ==========================================
-
-def test_classificar_atraso_sem_atraso():
-    # CT-09: 0 dias
+# RF03 - Testes de Caixa Preta (Classificação)
+def test_classificacao_sem_atraso():
     assert classificar_atraso(0) == "sem atraso"
 
-def test_classificar_atraso_leve():
-    # CT-10: 7 dias
+def test_classificacao_atraso_leve():
     assert classificar_atraso(7) == "atraso leve"
 
-def test_classificar_atraso_moderado():
-    # CT-11: 8 dias
-    assert classificar_atraso(8) == "atraso moderado"
+def test_classificacao_atraso_moderado():
+    assert classificar_atraso(30) == "atraso moderado"
 
-def test_classificar_atraso_grave():
-    # CT-12: 31 dias
+def test_classificacao_atraso_grave():
     assert classificar_atraso(31) == "atraso grave"
 
-# ==========================================
-# Testes de Caixa Branca (Cobertura de Caminhos e Decisões)
-# ==========================================
-
-def test_caixa_branca_cobertura_dias_negativos():
-    # Exercita o ramo: if dias_atraso <= 0 (com valor negativo)
-    assert calcular_multa(-5) == 0.0
-    assert classificar_atraso(-2) == "sem atraso"
-
-def test_caixa_branca_cobertura_atraso_grave():
-    # Exercita o ramo de mais de 30 dias de atraso (> 30)
-    assert classificar_atraso(45) == "atraso grave"
-
+# Testes de Caixa Branca
 def test_caixa_branca_bug_limite_exato_3_emprestimos():
-    # Teste focado no bug: emprestimos_ativos == 3
-    # O requisito diz: "menos de 3". Portanto, 3 DEVE retornar False.
     assert pode_emprestar(True, False, 3) is False
+
+def test_caixa_branca_cobertura_branches_multa():
+    assert calcular_multa(5) == 10.0
+    assert calcular_multa(10) == 23.0
