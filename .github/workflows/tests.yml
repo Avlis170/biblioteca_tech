@@ -24,4 +24,4 @@ jobs:
 
       - name: Executar testes
         run: |
-          python -m pytest test/ -v --cov=src --cov-branch
+          python -m pytest tests/ -v --cov=src --cov-branch
